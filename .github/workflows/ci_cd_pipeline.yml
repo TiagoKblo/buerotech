@@ -31,11 +31,10 @@ jobs:
     steps:
       - name: SSH Deploy
         uses: easingthemes/ssh-deploy@v2
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
         with:
-          server: ${{ secrets.DEPLOY_SERVER }}
-          username: ${{ secrets.DEPLOY_USERNAME }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: |
-            cd /path/to/your/deployment/directory
-            git pull origin main
-            # Comandos adicionais para reiniciar serviços, limpar cache, etc.
+          SOURCE: "." # Diretório local do código fonte a ser enviado
+          TARGET: "/path/to/remote/directory" # Diretório remoto onde o código será colocado
