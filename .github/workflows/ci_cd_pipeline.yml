@@ -1,21 +1,41 @@
-name: PHP Tests
- 
+name: PHP Tests and Deploy
+
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
+
       - name: Install dependencies
         run: composer install
- 
-      - name: Run tests
+
+      - name: Run PHPUnit tests
         run: ./vendor/bin/phpunit
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: SSH Deploy
+        uses: easingthemes/ssh-deploy@v2
+        with:
+          server: ${{ secrets.DEPLOY_SERVER }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            cd /path/to/your/deployment/directory
+            git pull origin main
+            # Comandos adicionais para reiniciar serviços, limpar cache, etc.
