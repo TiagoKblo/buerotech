@@ -40,16 +40,19 @@ if ($result_combinado->num_rows > 0) {
     while ($row = $result_combinado->fetch_assoc()) {
         // Calcular o nível de detritos
         $nivel_detritos = '';
+        $profundidade = 50; // Profundidade máxima do bueiro
+        $zonaMorta = 30; // Distância mínima para considerar a zona morta
 
+        $percentual = (($profundidade-$row['distancia'])/($profundidade-$zonaMorta))*100;
         // Converter a distância para percentual
-        $percentual = (50 - $row['distancia']) / 20 * 100;
+        //$percentual = (50 - $row['distancia']) / 20 * 100;
 
         if ($percentual > 75) { // Quanto maior a porcentagem, mais cheio está
-            $nivel_detritos = 'Vazio';
+            $nivel_detritos = 'Entupido';
         } elseif ($percentual >= 40 && $percentual <= 75) {
             $nivel_detritos = 'Precisa de Atenção';
         } elseif ($percentual < 40) {
-            $nivel_detritos = 'Entupido';
+            $nivel_detritos = 'Vazio';
         }
 
         // Adicionar os dados e o nível de detritos ao array de resultados
