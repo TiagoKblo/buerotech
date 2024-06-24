@@ -40,8 +40,8 @@ if ($result_combinado->num_rows > 0) {
     while ($row = $result_combinado->fetch_assoc()) {
         // Calcular o nível de detritos
         $nivel_detritos = '';
-        $profundidade = 50; // Profundidade máxima do bueiro
-        $zonaMorta = 30; // Distância mínima para considerar a zona morta
+        $profundidade = 40; // Profundidade máxima do bueiro
+        $zonaMorta = 20; // Distância mínima para considerar a zona morta
 
         $percentual = (($profundidade-$row['distancia'])/($profundidade-$zonaMorta))*100;
         // Converter a distância para percentual

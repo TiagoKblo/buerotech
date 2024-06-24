@@ -38,10 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $total_rows = $result_count->fetch_assoc()['total'];
 
         // Se houver mais de 10 resultados, remover os mais antigos
-        if ($total_rows > 10) {
+        if ($total_rows > 1) {
             $sql_delete = "DELETE FROM sensor_data ORDER BY timestamp ASC LIMIT ?";
             $stmt_delete = $mysqli->prepare($sql_delete);
-            $limit = $total_rows - 10;
+            $limit = $total_rows - 1;
             $stmt_delete->bind_param("i", $limit);
             $stmt_delete->execute();
         }
